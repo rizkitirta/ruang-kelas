@@ -27,8 +27,6 @@ class RegisterController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
-
-            Profile::create(['user_id' => $user->id,'last_name' => $request->last_name]);
             Auth::login($user);
 
             return \Redirect::route('dashboard.index');

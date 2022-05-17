@@ -104,6 +104,7 @@
                                             <input type="checkbox" name="agree" class="custom-control-input" id="agree">
                                             <label class="custom-control-label" for="agree">I agree with the terms and
                                                 conditions</label>
+                                            <a href="{{ route('login.index') }}" class="float-right mr-3">Login</a>
                                         </div>
                                     </div>
 

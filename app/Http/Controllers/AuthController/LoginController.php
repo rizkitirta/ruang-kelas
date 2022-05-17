@@ -12,6 +12,7 @@ class LoginController extends Controller
 {
     public function index()
     {
+        if (auth()->check()) return back();
         return view('auth.login');
     }
 

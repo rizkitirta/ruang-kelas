@@ -86,6 +86,7 @@
                                             <label class="custom-control-label" for="agree">I agree with the terms
                                                 and
                                                 conditions</label>
+                                            <a href="{{ route('register.index') }}" class="float-right mr-3">Register</a>
                                         </div>
                                     </div>
 

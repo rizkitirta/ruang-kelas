@@ -17,8 +17,9 @@ class CreateKumpulTugasTable extends Migration
             $table->id();
             $table->integer('tugas_id');
             $table->integer('user_id');
-            $table->integer('status');
-            $table->integer('nilai');
+            $table->integer('status')->nullable();
+            $table->integer('nilai')->nullable();
+            $table->text('file')->nullable();
             $table->timestamps();
         });
     }

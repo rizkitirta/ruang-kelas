@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Kelas;
+use App\Models\MetaKelas;
+use App\Models\Tugas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Stmt\TryCatch;
 
 class KelasController extends Controller
 {
@@ -12,9 +17,13 @@ class KelasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        // dd($request->all());
+        $data = MetaKelas::with('user')->latest()
+        ->where('kelas_id', $request->kelas_id);
+
+        return datatables()->of($data)->addIndexColumn()->make(true);
     }
 
     /**
@@ -38,7 +47,7 @@ class KelasController extends Controller
         try {
             $kelas = Kelas::create([
                 'nama_kelas' => $request->nama_kelas,
-                'bagian' => $request->bagian,
+                'bagian' => $request->kelas,
                 'mapel' => $request->mapel,
                 'ruang' => $request->ruang,
                 'kode_kelas' => $this->getKode(10),
@@ -80,31 +89,31 @@ class KelasController extends Controller
     public function show($id)
     {
         $data = Kelas::findOrFail($id);
-        // dd($data);
-        return view('kelas.index',compact('data'));
+        $tugas = Tugas::latest()->whereKelasId($id)->get();
+        return view('kelas.index', compact('data', 'tugas'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function gabung(Request $request)
     {
-        //
-    }
+        try {
+            MetaKelas::firstOrCreate([
+                'user_id' => Auth::id(),
+                'kelas_id' => $request->kelas_id,
+            ]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+            return \Response::json([
+                'status' => true,
+                'message' => 'Berhasil bergabung ke Kelas',
+            ]);
+        } catch (\Exception $e) {
+            if (env('APP_DEBUG')) {
+                dd($e->getMessage());
+            }
+            return \Response::json([
+                'status' => false,
+                'message' => 'Gagal bergabung ke Kelas',
+            ]);
+        }
     }
 
     /**
@@ -113,8 +122,38 @@ class KelasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            Kelas::findOrFail($request->kelas_id)->delete();
+
+            return \Response::json([
+                'status' => true,
+                'message' => 'Berhasil menghapus ke Kelas',
+            ]);
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            return \Response::json([
+                'status' => false,
+                'message' => 'Gagal menghapus ke Kelas',
+            ]);
+        }
+    }
+
+    public function destroyAnggota(Request $request)
+    {
+        try {
+            MetaKelas::where(['kelas_id' => $request->kelas_id, 'user_id' => $request->user_id])->delete();
+
+            return \Response::json([
+                'status' => true,
+                'message' => 'Berhasil menghapus ke anggota',
+            ]);
+        } catch (\Exception $e) {
+            return \Response::json([
+                'status' => false,
+                'message' => 'Gagal menghapus ke anggota',
+            ]);
+        }
     }
 }

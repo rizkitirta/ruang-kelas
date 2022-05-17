@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Kelas extends Model
+class KumpulTugas extends Model
 {
     use HasFactory;
-    protected $table = 'kelas';
+    protected $table = 'kumpul_tugas';
     protected $guarded = [];
 
 
-    public function anggota()
-    {
-        return $this->belongsToMany(User::class, 'meta_kelas');
-    }
+    const STATUS = [
+        'pending' => 0,
+        'selesai' => 1,
+    ];
 
     public function user()
     {
