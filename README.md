@@ -1,4 +1,5 @@
 ## Introduce
+```sh
 Ruang Kelas adalah aplikasi layaknya seperti google classroom,
 guru atau pemilik kelas dapat membuat tugas ke siswa yang bergabung ke kelasnya,
 serta pemilik kelas dapat memberikan nilai kepada siswa yang mengumpulkan tugasnya masing-masing
@@ -12,7 +13,7 @@ serta pemilik kelas dapat memberikan nilai kepada siswa yang mengumpulkan tugasn
  6.memberikan nilai ke siswa
  7.profile
  8.etc
- 
+ ```
 note: proyek ini dibuat dengan sesederhana mungkin dikarenakan keterbatasan waktu
 
 ## Installation
