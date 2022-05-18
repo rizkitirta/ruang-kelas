@@ -26,17 +26,17 @@ class ProfileController extends Controller
                 'email' => $request->email,
             ]);
 
-            if ($request->foto) {
-                $filePath = $request->file('foto')->store('/public/uploads');
-            }
-
-            Profile::updateOrCreate([
+            $profile = Profile::updateOrCreate([
                 'user_id' => $user->id
             ], [
                 'no_identitas' => $request->no_identitas,
                 'no_hp' => $request->no_hp,
-                'foto' => $filePath ?? null
             ]);
+
+            if($request->foto){
+                $filePath = $request->file('foto')->store('/public/uploads');
+                $profile->update(['foto' => $filePath]);
+            }
 
             DB::commit();
             return back()->with('success', 'Profile berhasil diupdate');

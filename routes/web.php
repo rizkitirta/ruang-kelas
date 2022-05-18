@@ -46,7 +46,7 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 // Dashboard
-Route::group(['prefix' => 'dashboard','middleware' => 'auth'], function () {
+Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
 
     // Kelas
@@ -75,5 +75,4 @@ Route::group(['prefix' => 'dashboard','middleware' => 'auth'], function () {
         Route::get('/', [ProfileController::class, 'index'])->name('index');
         Route::post('/store', [ProfileController::class, 'store'])->name('store');
     });
-
 });
